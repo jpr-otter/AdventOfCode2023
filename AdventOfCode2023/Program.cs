@@ -12,7 +12,7 @@ namespace AdventOfCode2023 // Note: actual namespace depends on the project name
         {
 
             //firstStar(); 
-            secondStar();
+            secondStar(); //F*CKMYLIFE
         }
         public static void firstStar()
         {
@@ -58,60 +58,73 @@ namespace AdventOfCode2023 // Note: actual namespace depends on the project name
         }
         public static void secondStar()
         {
-            //FUUUCK
-            Regex numberRegex = new Regex(@"\b(one|two|three|four|five|six|seven|eight|nine)\b");
-            Dictionary<string, int> numberDictionary = new Dictionary<string, int>()
+            Dictionary<string, int> numberWords = new Dictionary<string, int>()
             {
-                { "one", 1 },
-                { "two", 2 },
-                { "three", 3 },
-                { "four", 4 },
-                { "five", 5 },
-                { "six", 6 },
-                { "seven", 7 },
-                { "eight", 8 },
-                { "nine", 9 }
+                {"zero", 0}, {"one", 1}, {"two", 2}, {"three", 3}, {"four", 4},
+                {"five", 5}, {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}
             };
 
-            Console.WriteLine("Enter your text (type 'END' to stop):");
-            StringBuilder sb = new StringBuilder();
+            Console.WriteLine("Enter your lines (type 'END' to stop):");
+            string line;
             int totalSum = 0;
-
-            while (true)
+            while ((line = Console.ReadLine()) != "END")
             {
-                string line = Console.ReadLine();
-                if (line.ToUpper() == "END")
+                string numberString = "";
+                foreach (var numberWord in numberWords)
                 {
-                    break;
-                }
-
-                MatchCollection matches = numberRegex.Matches(line);
-                string firstNumber = null, lastNumber = null;
-
-                foreach (Match match in matches)
-                {
-                    if (firstNumber == null)
+                    while (line.Contains(numberWord.Key))
                     {
-                        firstNumber = match.Value;
-                    }
-                    lastNumber = match.Value;
-                }
-
-                if (firstNumber != null)
-                {
-                    string str = firstNumber + (lastNumber ?? firstNumber);
-                    if (int.TryParse(str, out int concatenatedNumber))
-                    {
-                        totalSum += concatenatedNumber;
-                        Console.WriteLine($"{line} - {firstNumber} + {lastNumber ?? firstNumber} - {concatenatedNumber}");
+                        numberString += numberWord.Value.ToString();
+                        int index = line.IndexOf(numberWord.Key);
+                        line = line.Remove(index, numberWord.Key.Length);
                     }
                 }
 
-                sb.AppendLine(line);
+                if (int.TryParse(numberString, out int number))
+                {
+                    totalSum += number;
+                }
             }
 
-            sb.AppendLine("Total sum of all numbers: " + totalSum);
-            Console.WriteLine("You entered:\n" + sb.ToString());
+            Console.WriteLine("Total sum of all calibration values: " + totalSum);
+        }
+        public static void secondSecondStar()
+        {
+            Dictionary<string, int> numberWords = new Dictionary<string, int>()
+            {
+                {"zero", 0}, {"one", 1}, {"two", 2}, {"three", 3}, {"four", 4},
+                {"five", 5}, {"six", 6}, {"seven", 7}, {"eight", 8}, {"nine", 9}
+            };
+
+            Console.WriteLine("Enter your lines (type 'END' to stop):");
+            string line;
+            int totalSum = 0;
+            while ((line = Console.ReadLine()) != "END")
+            {
+                // Initialize an empty string to hold the numbers found in the line
+                string numberString = ""; // <-- This is new
+
+                foreach (var numberWord in numberWords)
+                {
+                    if (line.Contains(numberWord.Key))
+                    {
+                        // Add the numeric value of the number word to the number string
+                        numberString += numberWord.Value.ToString(); // <-- This is changed
+
+                        // Remove the number word from the line so it's not counted more than once
+                        line = line.Replace(numberWord.Key, ""); // <-- This is new
+                    }
+                }
+
+                // Try to parse the number string into an integer
+                if (int.TryParse(numberString, out int number)) // <-- This is changed
+                {
+                    // Add the number to the total sum
+                    totalSum += number; // <-- This is changed
+                }
+            }
+
+            Console.WriteLine("Total sum of all calibration values: " + totalSum);
         }
 
     }
