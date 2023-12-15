@@ -128,65 +128,65 @@ namespace AdventOfCode2023 // Note: actual namespace depends on the project name
 
             Console.WriteLine("Total sum of all calibration values: " + totalSum);
         }
-        //public static void DayTwoFirstStar()
-        //{
-        //    string[] gameLines = System.IO.File.ReadAllLines(@"C:\Users\jrotter\Desktop\advent2.txt");
-        //    int sumOfGameIDs = 0;
+        public static void DayTwoFirstStarPROTO()
+        {
+            string[] gameLines = System.IO.File.ReadAllLines(@"C:\Users\MYNAME\Desktop\advent2.txt");
+            int sumOfGameIDs = 0;
 
-        //    foreach (string  gameLine in gameLines)
-        //    {
-        //        string[] gameID = gameLine.Split(':');
-        //        string[] colorParts = gameID[1].Split(new char[] { ',', ';' });
+            foreach (string gameLine in gameLines)
+            {
+                string[] gameID = gameLine.Split(':');
+                string[] colorParts = gameID[1].Split(new char[] { ',', ';' });
 
-        //        Dictionary<string, int> colorCounts = new Dictionary<string, int>();
+                Dictionary<string, int> colorCounts = new Dictionary<string, int>();
 
-        //        foreach (var part in colorParts)
-        //        {
-        //            string[] colorCount = part.Trim().Split(' ');
-        //            if (colorCount.Length == 2)
-        //            {
-        //                int count;
-        //                if (int.TryParse(colorCount[0], out count))
-        //                {
-        //                    string color = colorCount[1];
-        //                    if (colorCounts.ContainsKey(color))
-        //                    {
-        //                        colorCounts[color] += count;
-        //                    }
-        //                    else
-        //                    {
-        //                        colorCounts.Add(color, count);
-        //                    }
-        //                }
-        //            }
+                foreach (var part in colorParts)
+                {
+                    string[] colorCount = part.Trim().Split(' ');
+                    if (colorCount.Length == 2)
+                    {
+                        int count;
+                        if (int.TryParse(colorCount[0], out count))
+                        {
+                            string color = colorCount[1];
+                            if (colorCounts.ContainsKey(color))
+                            {
+                                colorCounts[color] += count;
+                            }
+                            else
+                            {
+                                colorCounts.Add(color, count);
+                            }
+                        }
+                    }
 
-        //            foreach (var color in colorCounts)
-        //            {
-        //                Console.WriteLine($"{color.Key}: {color.Value}");
+                    foreach (var color in colorCounts)
+                    {
+                        Console.WriteLine($"{color.Key}: {color.Value}");
 
-        //            }
-        //            //foreach (var ID in gameID)
-        //            //{
-        //            //    if (colorCounts.ContainsKey("red") && colorCounts["red"] <= 12 &&
-        //            //        colorCounts.ContainsKey("green") && colorCounts["green"] <= 13 &&
-        //            //        colorCounts.ContainsKey("blue") && colorCounts["blue"] <= 14)
-        //            //    {
-        //            //        sumOfGameIDs += int.Parse(ID.Split(' ')[1]);
-        //            //    }
-        //            //}
+                    }
+                    //foreach (var ID in gameID)
+                    //{
+                    //    if (colorCounts.ContainsKey("red") && colorCounts["red"] <= 12 &&
+                    //        colorCounts.ContainsKey("green") && colorCounts["green"] <= 13 &&
+                    //        colorCounts.ContainsKey("blue") && colorCounts["blue"] <= 14)
+                    //    {
+                    //        sumOfGameIDs += int.Parse(ID.Split(' ')[1]);
+                    //    }
+                    //}
 
-        //        }
-        //        Console.WriteLine(gameID[0]);           
+                }
+                Console.WriteLine(gameID[0]);
 
-        //    }
-        //    Console.WriteLine("Sum of Game IDs: " + sumOfGameIDs);
+            }
+            Console.WriteLine("Sum of Game IDs: " + sumOfGameIDs);
 
 
-        //}          
+        }
         public static void DayTwoFirstStar()
         {
             List<AdventGame> games = new List<AdventGame>();
-            string[] gameLines = System.IO.File.ReadAllLines(@"C:\Users\jrotter\Desktop\advent2.txt");
+            string[] gameLines = System.IO.File.ReadAllLines(@"C:\Users\MYNAME\Desktop\advent2.txt");
             int sumOfGameIDs = 0;
 
             foreach (string gameLine in gameLines)
@@ -219,7 +219,53 @@ namespace AdventOfCode2023 // Note: actual namespace depends on the project name
                 }
                 Console.WriteLine(game.ToString() + "\n\n");
             }
-            Console.WriteLine($"sumOfGameIDs "\n\n"); 
+            Console.WriteLine($"sumOfGameIDs \n\n"); 
+        }
+
+        public static void DayTwoFirstStarFINAL()
+        {
+            string[] gameLines = File.ReadAllLines(@"C:\Users\MYNAME\Desktop\advent2.txt");
+            int sumOfGameID = 0;
+
+            foreach (string line in gameLines)
+            {
+                string[] temp = line.Split(':');
+                var gameId = int.Parse(temp[0].Substring(5));
+                var valid = true;
+
+                foreach (string subset in temp[1].Split(';'))
+                {
+                    string[] cubes = subset.Split(',');
+                    int red = 0, blue = 0, green = 0;
+
+                    foreach (string cube in cubes)
+                    {
+                        temp = cube.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                        int count = int.Parse(temp[0]);
+
+                        switch (temp[1])
+                        {
+                            case "red":
+                                red += count;
+                                break;
+                            case "blue":
+                                blue += count;
+                                break;
+                            case "green":
+                                green += count;
+                                break;
+
+                        }
+                    }
+                    if (red > 12 || blue > 14 || green > 13)
+                    {
+                        valid = false;
+                        break;
+                    }
+                }
+                if (valid) sumOfGameID += gameId;
+            }
+            Console.WriteLine($"Sum: {sumOfGameID}");
         }
     }
 }   
